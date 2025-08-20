@@ -1,6 +1,6 @@
 import { signMessage } from "viem/accounts";
 import chalk from "chalk";
-import { chain_config } from '../configs/config.ts';
+import { CHAIN_CONFIG } from '../configs/chain.config.ts';
 import { zeroAddress } from "viem";
 
 /**
@@ -16,7 +16,7 @@ const main = async () => {
         let p_key: `0x${string}`;
 
         if (p_keyArg != undefined) p_key = p_keyArg as `0x${string}`;
-        else p_key = chain_config.private_key;
+        else p_key = CHAIN_CONFIG.private_key;
 
         if (p_key == zeroAddress || p_key == undefined) throw new Error('No private keys found');
             

@@ -2,13 +2,13 @@ import type { Request, Response, NextFunction } from 'express';
 
 import { Client, auth } from "twitter-api-sdk";
 import { randomString } from '../utils/createRandom.utils.ts';
-import { x_config } from "../configs/config.ts";
+import { X_CONFIG } from "../configs/x.config.ts";
 
 
 
 const authClient = new auth.OAuth2User({
-	client_id: x_config.client_id,
-	client_secret: x_config.client_secret,
+	client_id: X_CONFIG.client_id,
+	client_secret: X_CONFIG.client_secret,
 	callback: "http://localhost:5174/auth_x/callback",
 	scopes: [
 		"offline.access",
@@ -37,7 +37,7 @@ const createState = () => {
     STATE = randomString(250);
 }
 
-export const xCallback = async (req: Request, res: Response) => {
+export const xCallbackController = async (req: Request, res: Response) => {
     try {
 		const { code, state } = req.query;
 
@@ -57,7 +57,7 @@ export const xCallback = async (req: Request, res: Response) => {
 	}
 } 
 
-export const xLogin = (req: Request, res: Response) => {
+export const xLoginController = (req: Request, res: Response) => {
     createState();
 
     const authUrl = authClient.generateAuthURL({
@@ -67,7 +67,7 @@ export const xLogin = (req: Request, res: Response) => {
     res.redirect(authUrl);
 }
 
-export const xRevoke = async (req: Request, res: Response) => {
+export const xRevokeControlller = async (req: Request, res: Response) => {
     try {
         const response = await authClient.revokeAccessToken();
         res.send(response);

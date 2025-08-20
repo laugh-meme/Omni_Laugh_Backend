@@ -1,12 +1,11 @@
-
 import { Router } from 'express';
-
-import { xCallback, xLogin, xRevoke } from '../controllers/xAuthentication.controller.ts';
+import { xCallbackController, xLoginController, xRevokeControlller } from '../controllers/xAuthentication.controller.ts';
+import { checkSessionAvailabilityMiddleware } from '../middlewares/checkSessionAvailability.ts';
 
 const router = Router();
 
-router.get("/login", xLogin);
-router.get("/revoke", xRevoke);
-router.get("/callback", xCallback);
+router.get("/login", checkSessionAvailabilityMiddleware, xLoginController);
+router.get("/revoke", checkSessionAvailabilityMiddleware, xRevokeControlller);
+router.get("/callback", checkSessionAvailabilityMiddleware, xCallbackController);
 
 export default router;
