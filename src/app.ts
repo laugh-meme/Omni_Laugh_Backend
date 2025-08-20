@@ -2,6 +2,7 @@ import express from 'express';
 import config from './configs/config.ts';
 import session from 'express-session';
 import { SESSION_CONFIG } from './configs/session.config.ts';
+import { errorHandler } from './middlewares/errorHandler.middleware.ts';
 import authenticationRouter from './routes/xAuthentication.router.ts'
 import sessionRouter from './routes/session.router.ts';
 
@@ -17,5 +18,7 @@ app.use('/auth_x', authenticationRouter);
 app.get('/', (req, res) => {
     res.send(`Welcome to Omni_Laugh ${config.nodeEnv === 'development' ? 'Development API' : 'API' } 😊👍🏻`);
 })
+
+app.use(errorHandler);
 
 export default app;

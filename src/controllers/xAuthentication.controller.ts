@@ -37,7 +37,7 @@ const createState = () => {
     STATE = randomString(250);
 }
 
-export const xCallbackController = async (req: Request, res: Response) => {
+export const xCallbackController = async (req: Request, res: Response, next: NextFunction) => {
     try {
 		const { code, state } = req.query;
 
@@ -52,12 +52,12 @@ export const xCallbackController = async (req: Request, res: Response) => {
 
 		console.log(user);
 		res.redirect("/");
-	} catch (error) {
-		console.log(error);
+	} catch (err) {
+		next(err);
 	}
 } 
 
-export const xLoginController = (req: Request, res: Response) => {
+export const xLoginController = (req: Request, res: Response, next: NextFunction) => {
     createState();
 
     const authUrl = authClient.generateAuthURL({
@@ -67,11 +67,11 @@ export const xLoginController = (req: Request, res: Response) => {
     res.redirect(authUrl);
 }
 
-export const xRevokeControlller = async (req: Request, res: Response) => {
+export const xRevokeControlller = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const response = await authClient.revokeAccessToken();
         res.send(response);
-    } catch (error) {
-        console.log(error);
+    } catch (err) {
+        next(err);
     }
 }
