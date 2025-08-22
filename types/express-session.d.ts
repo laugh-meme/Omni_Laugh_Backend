@@ -10,5 +10,6 @@ declare module 'express-session' {
         address?: `0x${string}`; 
         nonce?: SessionNonce;
         state?: string;
+        xId?: string;
     }
 }

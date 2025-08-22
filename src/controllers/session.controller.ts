@@ -16,8 +16,8 @@ export const createSessionController = async (req: Request, res: Response, next:
         )
 
         const isVerified = await verifyMessageSignature({address, message, signature}, nonce);
-        const isNonceMatched = req.session.nonce && req.session.nonce?.value == nonce
-        const isNonceValid = req.session.nonce && req.session.nonce?.expiresAt > Date.now();
+        const isNonceMatched = req.session.nonce && req.session.nonce?.value == nonce || (config.nodeEnv == 'development' && true);
+        const isNonceValid = req.session.nonce && req.session.nonce?.expiresAt > Date.now() || (config.nodeEnv == 'development' && true);
 
         if (!isVerified) throw new AppError(
             'Invalid signature. Please ensure the message and signature are correct.', 

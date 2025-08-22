@@ -8,6 +8,8 @@ import { RATE_LIMITER_CONFIG } from './configs/rate_limiter.config.ts';
 import { errorHandler } from './middlewares/errorHandler.middleware.ts';
 import xAuthenticationRouter from './routes/xAuthentication.router.ts'
 import sessionRouter from './routes/session.router.ts';
+import walletConnectionRouter from './routes/walletConnection.router.ts';
+
 
 const app = express();
 
@@ -20,6 +22,7 @@ app.use(rateLimit(RATE_LIMITER_CONFIG));
 // Routes 
 app.use('/session', sessionRouter);
 app.use('/auth_x', xAuthenticationRouter);
+app.use('/wallet_connections', walletConnectionRouter);
 
 app.get('/', (req, res) => {
     res.send(`Welcome to Omni_Laugh ${config.nodeEnv === 'development' ? 'Development API' : 'API' } 😊👍🏻`);

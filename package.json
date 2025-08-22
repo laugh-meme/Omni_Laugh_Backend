@@ -26,6 +26,8 @@
     "typescript": "^5.9.2"
   },
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.873.0",
+    "@aws-sdk/util-dynamodb": "^3.873.0",
     "express": "^5.1.0",
     "express-rate-limit": "^8.0.1",
     "express-session": "^1.18.2",
