@@ -69,15 +69,12 @@ export const putWalletConnectionsService = async (mainWalletAddress: `0x${string
         }
 
         const jointConnectionIDToFetch = parsedConnectionID.slice(0, parsedConnectionID[0] == 'MAIN' || parsedConnectionID[0] == 'SUB' ? 1 : 2).join("#");
-        console.log(jointConnectionIDToFetch)
 
         const data = await fetchWalletConnectionsService(mainWalletAddress, jointConnectionIDToFetch as ConnectionID);
         console.log(data)
-        // if (data.length >= 2) throw new AppError('User cannot have more than 2 accounts', 401, 'RESTRICTED');
-
+        if (data.length >= 2) throw new AppError('User cannot have more than 2 accounts', 401, 'RESTRICTED');
 
         const jointConnectionIDToPut = parsedConnectionID.join('#');
-        console.log(jointConnectionIDToPut);
 
         const item: WalletConnections = {
             MainWalletAddress: mainWalletAddress,
@@ -93,8 +90,8 @@ export const putWalletConnectionsService = async (mainWalletAddress: `0x${string
         };
         
         const command = new PutItemCommand(input);
-        // const response = await AWS_CLIENT.send(command);
-        // return response
+        const response = await AWS_CLIENT.send(command);
+        return response
     } catch (err) {
         throw err;
     }
