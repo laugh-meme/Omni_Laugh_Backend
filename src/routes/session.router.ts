@@ -9,5 +9,4 @@ router.get('/check_session', checkSessionAvailabilityController);
 router.get('/nonce', nonceController);
 router.get('/fetch_session', fetchSessionController)
 
-
 export default router;

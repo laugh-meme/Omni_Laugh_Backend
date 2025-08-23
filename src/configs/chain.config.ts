@@ -1,5 +1,5 @@
 import { zeroAddress } from 'viem';
-import { requireEnv } from '../utils/requireEnv.ts';
+import { requireEnv } from '../utils/requireEnv.utils.ts';
 import dotenv from 'dotenv';
 dotenv.config(); 
 

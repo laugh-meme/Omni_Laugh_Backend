@@ -1,5 +1,5 @@
 import type { Request } from "express"
-import { consoleErrorIfDevMode, consoleIfDevMode } from "../../utils/consoleLogging.ts";
+import { consoleErrorIfDevMode, consoleIfDevMode } from "../../utils/consoleLogging.utils.ts";
 import chalk from "chalk";
 import { randomString } from "../../utils/createRandom.utils.ts";
 

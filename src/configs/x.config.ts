@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import { requireEnv } from '../utils/requireEnv.ts';
+import { requireEnv } from '../utils/requireEnv.utils.ts';
 
 export type X_Config = {
 	api_key: string;

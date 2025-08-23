@@ -3,11 +3,11 @@ import type { Request, Response, NextFunction } from 'express';
 import { Client, auth } from "twitter-api-sdk";
 import { randomString } from '../utils/createRandom.utils.ts';
 import { X_CONFIG } from "../configs/x.config.ts";
-import { consoleIfDevMode } from '../utils/consoleLogging.ts';
+import { consoleErrorIfDevMode, consoleIfDevMode } from '../utils/consoleLogging.utils.ts';
 import chalk from 'chalk';
 import { putWalletConnectionsService } from '../services/database/walletConnections.service.ts';
-
-
+import type { ConnectionID } from '../models/walletConnections.model.ts';
+import AppError from '../errors/AppError.error.ts';
 
 const authClient = new auth.OAuth2User({
 	client_id: X_CONFIG.client_id,
@@ -45,9 +45,9 @@ export const xCallbackController = async (req: Request, res: Response, next: Nex
 		const { code, state } = req.query;
 
 		if (state !== STATE) {
-			res.status(400).send("State isn't matching");
+			throw new AppError("State isn't matching", 401, 'UNAUTHORIZED');
 		}
-		5
+		
 		const { token } = await authClient.requestAccessToken(code as string);
 
 		const client = new Client(token.access_token as string);
@@ -56,12 +56,12 @@ export const xCallbackController = async (req: Request, res: Response, next: Nex
 		if (user.data?.id !== undefined) {
 			req.session.xId = user.data.id;
 			consoleIfDevMode(`X id stored to session : ${chalk.green.bold(req.session.xId)}`)
-				
-			req.session.address = '0xcEdCA7ae1C55E249a087e481317a041E7db27915'
+			req.session.address = '0xb04E18d05fc22717Cd4BBF9cb82E35dC26Da6e57';
 
 			if (req.session.address) {
-				const address = req.session.address;
-				const connectionID = `SOCIAL#X#${req.session.xId}`;
+				const address: `0x${string}` = req.session.address;
+				const connectionID: ConnectionID = `SOCIAL#X#${req.session.xId}`;
+				
 				const response = await putWalletConnectionsService(address, connectionID);
 				console.log(response);
 			}
@@ -69,6 +69,7 @@ export const xCallbackController = async (req: Request, res: Response, next: Nex
 
 		res.redirect("/");
 	} catch (err) {
+		consoleErrorIfDevMode(err);
 		next(err);
 	}
 } 

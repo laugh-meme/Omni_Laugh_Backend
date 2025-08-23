@@ -1,19 +1,15 @@
 import type { Request, Response, NextFunction } from "express"
 import { verifyMessageSignature } from "../services/auth/verifyMessageSignature.service.ts";
-import { consoleErrorIfDevMode } from "../utils/consoleLogging.ts";
+import { consoleErrorIfDevMode } from "../utils/consoleLogging.utils.ts";
 import { checkSessionAvailabilityService, createSessionService, nonceService } from "../services/auth/session.service.ts";
 import config from "../configs/config.ts";
 import AppError from "../errors/AppError.error.ts";
+import { validateData } from "../utils/validateData.utils.ts";
 
 export const createSessionController = async (req: Request, res: Response, next: NextFunction) => {
     try {   
         const { address, message, signature, nonce } = req.body;
-
-        if (!address || !message || !signature || !nonce) throw new AppError(
-            'Missigng parameters: address, message, signature, nonce.',
-            400,
-            'BAD_REQUEST'
-        )
+        validateData({ address, message, signature, nonce });
 
         const isVerified = await verifyMessageSignature({address, message, signature}, nonce);
         const isNonceMatched = req.session.nonce && req.session.nonce?.value == nonce || (config.nodeEnv == 'development' && true);

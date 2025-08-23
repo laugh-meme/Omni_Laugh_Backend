@@ -1,7 +1,7 @@
 
 import chalk from 'chalk';
 import {verifyMessage, type VerifyMessageParameters} from 'viem';
-import { consoleErrorIfDevMode, consoleIfDevMode } from '../../utils/consoleLogging.ts';
+import { consoleErrorIfDevMode, consoleIfDevMode } from '../../utils/consoleLogging.utils.ts';
 
 export const verifyMessageSignature = async ({address, message, signature}: VerifyMessageParameters, nonce: string) => {
     try {
